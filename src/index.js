@@ -3,11 +3,13 @@ const app = express();
 const userRoutes = require("./routes/userRoutes");
 const tableRoutes = require("./routes/tableRoutes");
 const restaurantRoutes = require("./routes/restaurantRoutes");
+const requestRoutes = require("./routes/requestRoutes");
 
 app.use(express.json());
 app.use("/users", userRoutes);
 app.use("/tables", tableRoutes);
 app.use("/restaurants", restaurantRoutes);
+app.use("/requests", requestRoutes);
 
 
 app.get("/", (req, res) => {
