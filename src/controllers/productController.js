@@ -11,12 +11,18 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
   try {
-    const { id } = req.query;
+    const { id, restaurantID } = req.query;
 
     if (id) {
       const product = await service.getProductById(id);
       if (!product) return res.status(404).json({ error: "No encontrado" });
       return res.json(product);
+    }
+
+    if (restaurantID) {
+      const products = await service.getProductsByRestaurant(restaurantID);
+      if (!products) return res.status(404).json({ error: "No encontrado" });
+      return res.json(products);
     }
 
     const products = await service.getProducts();
