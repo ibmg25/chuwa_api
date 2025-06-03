@@ -11,12 +11,24 @@ exports.createTable = async (req, res) => {
 
 exports.getTables = async (req, res) => {
   try {
-    const { id } = req.query;
+    const { id, restaurantID, linkCode } = req.query;
 
     if (id) {
       const table = await service.getTableById(id);
       if (!table) return res.status(404).json({ error: "No encontrado" });
       return res.json(table);
+    }
+
+    if (restaurantID) {
+      const tables = await service.getTablesByRestaurant(restaurantID);
+      if (!tables) return res.status(404).json({ error: "No encontrado" });
+      return res.json(tables);
+    }
+
+    if (linkCode) {
+      const tables = await service.getTableByLinkCode(linkCode);
+      if (!tables) return res.status(404).json({ error: "No encontrado" });
+      return res.json(tables);
     }
 
     const tables = await service.getTables();
