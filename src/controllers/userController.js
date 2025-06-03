@@ -9,8 +9,16 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.getUsers = async (_req, res) => {
+exports.getUsers = async (req, res) => {
   try {
+    const { id } = req.query;
+
+    if (id) {
+      const user = await service.getUserById(id);
+      if (!user) return res.status(404).json({ error: "No encontrado" });
+      return res.json(user);
+    }
+
     const users = await service.getUsers();
     res.json(users);
   } catch (err) {
