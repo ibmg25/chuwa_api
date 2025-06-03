@@ -9,8 +9,16 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-exports.getProducts = async (_req, res) => {
+exports.getProducts = async (req, res) => {
   try {
+    const { id } = req.query;
+
+    if (id) {
+      const product = await service.getProductById(id);
+      if (!product) return res.status(404).json({ error: "No encontrado" });
+      return res.json(product);
+    }
+
     const products = await service.getProducts();
     res.json(products);
   } catch (err) {

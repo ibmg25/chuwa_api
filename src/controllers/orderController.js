@@ -9,8 +9,16 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-exports.getOrders = async (_req, res) => {
+exports.getOrders = async (req, res) => {
   try {
+    const { id } = req.query;
+
+    if (id) {
+      const order = await service.getOrderById(id);
+      if (!order) return res.status(404).json({ error: "No encontrado" });
+      return res.json(order);
+    }
+
     const orders = await service.getOrders();
     res.json(orders);
   } catch (err) {

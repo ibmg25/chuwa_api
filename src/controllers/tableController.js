@@ -9,14 +9,23 @@ exports.createTable = async (req, res) => {
   }
 };
 
-exports.getTables = async (_req, res) => {
+exports.getTables = async (req, res) => {
   try {
+    const { id } = req.query;
+
+    if (id) {
+      const table = await service.getTableById(id);
+      if (!table) return res.status(404).json({ error: "No encontrado" });
+      return res.json(table);
+    }
+
     const tables = await service.getTables();
     res.json(tables);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.getTableById = async (req, res) => {
   try {

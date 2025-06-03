@@ -9,8 +9,16 @@ exports.createRequest = async (req, res) => {
   }
 };
 
-exports.getRequests = async (_req, res) => {
+exports.getRequests = async (req, res) => {
   try {
+    const { id } = req.query;
+
+    if (id) {
+      const request = await service.getRequestById(id);
+      if (!request) return res.status(404).json({ error: "No encontrado" });
+      return res.json(request);
+    }
+
     const requests = await service.getRequests();
     res.json(requests);
   } catch (err) {

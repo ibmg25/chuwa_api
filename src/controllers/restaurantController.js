@@ -9,8 +9,16 @@ exports.createRestaurant = async (req, res) => {
   }
 };
 
-exports.getRestaurants = async (_req, res) => {
+exports.getRestaurants = async (req, res) => {
   try {
+    const { id } = req.query;
+
+    if (id) {
+      const restaurant = await service.getRestaurantById(id);
+      if (!restaurant) return res.status(404).json({ error: "No encontrado" });
+      return res.json(restaurant);
+    }
+
     const restaurants = await service.getRestaurants();
     res.json(restaurants);
   } catch (err) {
